@@ -1,0 +1,20 @@
+import json
+
+import requests
+from bs4 import BeautifulSoup
+from flask import Flask, render_template, request, session, redirect
+
+requesturl = "https://uatapib2c.cloudd.live/api/Account/News"
+auth = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE3NjU3IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjdFL2FjcWRLbnFWdDdUMGlkeHMrSVE9PSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvc2VyaWFsbnVtYmVyIjoiMTc2NTciLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiJxVzhSSmxFSkxJK1ZraENNMlVQUGdPb0xPRVl0VDZoNC9oNkRJbDluUjRVPSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2hhc2giOiJCMTY5OUJFMS1DNkIxLTQ3RjAtOTAwQi00MjNENEYzN0FFODIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3ByaW1hcnlzaWQiOiI2MDQ0MTYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOnRydWUsImlzQWxsb3dNdWx0aUxvZ2luIjpmYWxzZSwiZXhwIjoxNjg2NDA1NDE0LCJpc3MiOiJsb25kb24xOSIsImF1ZCI6ImxvbmRvbjE5In0.2cJwf4dvLqggVZNzzcE5x2NtD76GC3bGkEDp4MBPKP8"
+appcertkey = "fg6z9K6JvN8j2!2@g0+hj$ku"
+proxies = {
+    "http": "http://36.67.45.71:8080",
+}
+headers = {
+    "Authorization": auth,
+    "appcertkey":appcertkey
+}
+r = requests.post(requesturl, proxies=proxies, headers=headers)
+htmlcontent = r.content
+soup = BeautifulSoup(htmlcontent, 'html.parser')
+print(soup)

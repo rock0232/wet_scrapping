@@ -1,0 +1,142 @@
+<html lang="en">
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+  <title>Cricbuzz</title>
+</head>
+<script>
+  var globalresponse;
+  function MyFunction(callback) {
+    $.ajax({
+      type: "GET",
+      contentType: "application/json; charset=utf-8",
+      async: true,
+      url: "http://127.0.0.1:5000/demo",
+      dataType: "json",
+      success: function (response) {
+        globalresponse = response;
+        callback(globalresponse);
+      },
+      failure: function (response) {
+        alert(response.d);
+      },
+      error: function (response) {
+        alert(response.d);
+      },
+      complete: function (response) {
+      }
+    });
+  }
+  function newfunction() {
+  MyFunction(function (response) {
+    // const node = document.createTextNode(response);
+    // document.createElement("div").append(node)
+    // document.getElementsByClassName("loadBtn").append(response)// Access the response inside the callback
+    const { titles, links, subs, newstimes, imgs, category, event } = response;
+    console.log(titles); // titles
+    console.log(links); // links
+    console.log(subs); // subs
+    console.log(newstimes); // newstimes
+    console.log(imgs); // imgs
+    console.log(category); // category
+    console.log(event); // event
+
+    var container = document.getElementById('container');
+
+    // Loop through the data arrays and create HTML elements
+    for (var i = 0; i < titles.length; i++) {
+      // Create the image container element
+      var imageContainer = document.createElement('div');
+      imageContainer.className = 'cb-col cb-col-33 cb-pos-rel';
+      imageContainer.setAttribute('itemscope', '');
+      imageContainer.setAttribute('itemtype', 'https://schema.org/ImageObject');
+      imageContainer.setAttribute('itemprop', 'image');
+
+      // Create the image element
+      var image = document.createElement('img');
+      image.height = '152';
+      image.width = '205';
+      image.alt = 'File Photo:';
+      image.title = 'File Photo:';
+      image.setAttribute('itemprop', 'image');
+      image.className = 'cb-lst-img';
+      image.src = imgs[i];
+      image.style.padding = '0px';
+
+      // Create the link element
+      var link = document.createElement('a');
+      link.target = '_self';
+      link.href = links[i];
+      link.title = 'Focussed Karim Janat sets himself up for Test bout';
+      link.appendChild(image);
+
+      // Append the link to the image container
+      imageContainer.appendChild(link);
+
+      // Create the text container element
+      var textContainer = document.createElement('div');
+      textContainer.className = 'cb-col-67 cb-nws-lst-rt cb-col cb-col-text-container';
+
+      // Create the category element
+      var categoryElement = document.createElement('div');
+      categoryElement.className = 'cb-nws-time';
+      var categoryLink = document.createElement('a');
+      categoryLink.className = 'cb-text-link';
+      categoryLink.href = '/cricket-news/editorial/interviews';
+      categoryLink.title = 'INTERVIEWS';
+      categoryLink.textContent = category[i];
+      categoryElement.appendChild(categoryLink);
+      categoryElement.innerHTML += '<span class="cb-dot">&nbsp;•&nbsp;</span>' + event[i];
+
+      // Create the title element
+      var titleElement = document.createElement('h2');
+      titleElement.className = 'cb-nws-hdln cb-font-18 line-ht24';
+      titleElement.style.backgroundColor = '#b8d7e9';
+      var titleLink = document.createElement('a');
+      titleLink.className = 'cb-nws-hdln-ancr text-hvr-underline';
+      titleLink.target = '_self';
+      titleLink.href = links[i];
+      titleLink.title = 'Focussed Karim Janat sets himself up for Test bout';
+      titleLink.textContent = titles[i];
+      titleElement.appendChild(titleLink);
+
+      // Create the sub element
+      var subElement = document.createElement('div');
+      subElement.className = 'cb-nws-intr';
+      subElement.textContent = subs[i];
+
+      // Create the time element
+      var timeElement = document.createElement('div');
+      timeElement.innerHTML = '<span class="cb-nws-time">1h ago</span>';
+
+      // Append all elements to the text container
+      textContainer.appendChild(categoryElement);
+      textContainer.appendChild(titleElement);
+      textContainer.appendChild(subElement);
+      textContainer.appendChild(timeElement);
+
+      // Append the image container and text container to the main container
+      container.appendChild(imageContainer);
+      container.appendChild(textContainer);
+    }
+
+  })};
+
+
+</script>
+
+<body style="background-color: #fff">
+
+  <div id="container" class="cb-col cb-col-100 cb-lst-itm cb-pos-rel cb-lst-itm-lg">
+  </div>
+  <script>
+    // console.log(globalresponse)
+
+  </script>
+  <button id="loadBtn" onclick=newfunction()> Load more </button>
+
+
+</body>
+
+</html>

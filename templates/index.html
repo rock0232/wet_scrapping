@@ -1,0 +1,75 @@
+<html lang="en">
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+  <title>Cricbuzz</title>
+</head>
+<script>
+  var globalresponse;
+  function MyFunction(callback) {
+    $.ajax({
+      type: "GET",
+      contentType: "application/json; charset=utf-8",
+      async: true,
+      url: "http://127.0.0.1:5000/demo",
+      dataType: "json",
+      success: function (response) {
+        globalresponse = response;
+        callback(globalresponse);
+        // document.getElementsByClassName("cb-nws-time").append(response);
+        // node.append(response)
+      },
+      failure: function (response) {
+        alert(response.d);
+      },
+      error: function (response) {
+        alert(response.d);
+      },
+      complete: function (response) {
+      }
+    });
+  }
+  MyFunction(function (response) {
+    // const node = document.createTextNode(response);
+    // document.createElement("div").append(node)
+    // document.getElementsByClassName("loadBtn").append(response)// Access the response inside the callback
+    console.log(response)
+  });
+
+    // function Adddata(){
+
+    // }
+
+</script>
+
+<body style="background-color: #fff">
+  {% for i in range(0, 10) %}
+
+  <div class="cb-col cb-col-100 cb-lst-itm cb-pos-rel cb-lst-itm-lg">
+    <div class="cb-col cb-col-33 cb-pos-rel" itemscope="" itemtype="https://schema.org/ImageObject" itemprop="image">
+      <a target="_self" href={{links[i]}} title="Focussed Karim Janat sets himself up for Test bout"><img height="152"
+          width="205"
+          alt="File Photo: Karim Janat has had an excellent run with both bat and ball in the domestic first class tournament."
+          title="File Photo: Karim Janat has had an excellent run with both bat and ball in the domestic first class tournament."
+          itemprop="image" class="cb-lst-img" src="{{imgs[i]}}" style="padding:0px;"></a>
+    </div>
+    <div class="cb-col-67 cb-nws-lst-rt cb-col cb-col-text-container">
+      <div class="cb-nws-time"><a target="_self" class="cb-text-link" href="/cricket-news/editorial/interviews"
+          title="INTERVIEWS">{{category[i]}}</a>
+        <span class="cb-dot">&nbsp;•&nbsp;</span>{{event[i]}}
+      </div>
+      <h2 class="cb-nws-hdln cb-font-18 line-ht24" style="background-color:#b8d7e9;"><a target="_self"
+          style="color:#020202;" class="cb-nws-hdln-ancr text-hvr-underline" href="{{links[i]}}"
+          title="image title">{{titles[i]}}</a></h2>
+      <div class="cb-nws-intr">{{subs[i]}}</div>
+      <div><span class="cb-nws-time">1h ago</span></div>
+    </div>
+  </div>
+  {% endfor %}
+  <button id="loadBtn" onclick=MyFunction()> Load more </button>
+
+
+</body>
+
+</html>
