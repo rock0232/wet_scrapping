@@ -58,8 +58,8 @@ def getnewstitle():
         titledata = title[i].string
         titles.append(titledata)
         link = title[i].get("href")
-        links.append("https://www.cricbuzz.com" + link)
-        # links.append("https://127.0.0.1:5000" + link)
+        # links.append("https://www.cricbuzz.com" + link)
+        links.append(link)
     return list(titles)[:10], list(links[:-6])
 
 
@@ -202,7 +202,7 @@ def news():
         pg2titles.append(titledata)
         link = pg2title[i].get("href")
         # pg2links.append("https://www.cricbuzz.com" + link)
-        pg2links.append("https://127.0.0.1:5000" + link)
+        pg2links.append(link)
 
     pg2images = soup2.select("img.cb-lst-img")
     imgs2 = []
