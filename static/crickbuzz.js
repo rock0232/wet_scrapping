@@ -1,12 +1,3 @@
-<html lang="en">
-
-<head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-
-  <title>Cricbuzz</title>
-</head>
-<script>
-
 
   var globalresponse;
   function MyFunction(callback) {
@@ -30,17 +21,23 @@
       }
     });
   }
-  function newfunction() {
-    MyFunction(function (response){
-    
 
+  function newfunction() {
+  MyFunction(function (response) {
     // const node = document.createTextNode(response);
     // document.createElement("div").append(node)
     // document.getElementsByClassName("loadBtn").append(response)// Access the response inside the callback
-    const { titles, links, subs, newstimes, imgs, category, event, nexturl} = response;
+    const { titles, links, subs, newstimes, imgs, category, event } = response;
+    console.log(titles); // titles
+    console.log(links); // links
+    console.log(subs); // subs
+    console.log(newstimes); // newstimes
+    console.log(imgs); // imgs
+    console.log(category); // category
+    console.log(event); // event
 
     var container = document.getElementById('container');
-    
+
     // Loop through the data arrays and create HTML elements
     for (var i = 0; i < titles.length; i++) {
       // Create the image container element
@@ -112,45 +109,10 @@
       textContainer.appendChild(titleElement);
       textContainer.appendChild(subElement);
       textContainer.appendChild(timeElement);
-      divcontainer = document.getElementById("newslist")
+
       // Append the image container and text container to the main container
-      divcontainer.appendChild(imageContainer);
-      divcontainer.appendChild(textContainer);
+      container.appendChild(imageContainer);
+      container.appendChild(textContainer);
     }
 
-
   })};
-
-
-
-</script>
-<body style="background-color: #fff">
-<div id="newslist">
-  {% for i in titles %}
-
-  <div class="cb-col cb-col-100 cb-lst-itm cb-pos-rel cb-lst-itm-lg">
-    <div class="cb-col cb-col-33 cb-pos-rel" itemscope="" itemtype="https://schema.org/ImageObject" itemprop="image">
-      <a target="_self" href={{links[loop.index0]}} title="Focussed Karim Janat sets himself up for Test bout"><img height="152"
-          width="205"
-          alt="File Photo: Karim Janat has had an excellent run with both bat and ball in the domestic first class tournament."
-          title="File Photo: Karim Janat has had an excellent run with both bat and ball in the domestic first class tournament."
-          itemprop="image" class="cb-lst-img" src="{{imgs[loop.index0]}}" style="padding:0px;"></a>
-    </div>
-    <div class="cb-col-67 cb-nws-lst-rt cb-col cb-col-text-container">
-      <div class="cb-nws-time"><a target="_self" class="cb-text-link" href="/cricket-news/editorial/interviews"
-          title="INTERVIEWS">{{category[loop.index0]}}</a>
-        <span class="cb-dot">&nbsp;•&nbsp;</span>{{event[loop.index0]}}
-      </div>
-      <h2 class="cb-nws-hdln cb-font-18 line-ht24" style="background-color:#b8d7e9;"><a target="_self"
-          style="color:#020202;" class="cb-nws-hdln-ancr text-hvr-underline" href="{{links[i]}}"
-          title="image title">{{titles[loop.index0]}}</a></h2>
-      <div class="cb-nws-intr">{{subs[loop.index0]}}</div>
-      <div><span class="cb-nws-time">1h ago</span></div>
-    </div>
-  </div>
-  {% endfor %}
-</div>
-  <button id="loadBtn" onclick=newfunction() nexturl="{{nexturl}}"> Load more </button>
-</body>
-
-</html>

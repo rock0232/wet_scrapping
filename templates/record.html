@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CRUD Example</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <script src="static/script.js"></script>
+</head>
+<body>
+    <h1>Records</h1>
+    <table id="records-table">
+        <thead>
+            <tr>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>City</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.Firstname }}</td>
+                <td>{{ record.Lastname }}</td>
+                <td>{{ record.Email }}</td>
+                <td>{{ record.Phone }}</td>
+                <td>{{ record.City }}</td>
+                <td>
+                    <button onclick="editRecord({{ record.ID }})">Edit</button>
+                    <button onclick="deleteRecord({{ record.ID }})">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Form for adding a new record -->
+    <h2>Add New Record</h2>
+    <form id="add-form" onsubmit='{addRecord(event)}'>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
+        <button type="submit">Add</button>
+    </form>
+</body>
+</html>
