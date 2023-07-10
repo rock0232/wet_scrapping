@@ -4,7 +4,23 @@
     <meta charset="UTF-8">
     <title>news details</title>
 </head>
-<body>
+<body style="    background-color: #f1f1f1;">
+<div id="content" style="width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    margin-left: 222px;
+    padding: 10px;
+    background-color: antiquewhite;">
+    <img  style="background-image: url('{{image}}');height: 396px;
+    position: relative;
+    margin-bottom: 50px;
+    width: 595px;">
+    {% for news in data%}
+    <p style="font-size: 20px;line-height: 1;"> {{news}} </p>
+    {%endfor%}
+</div>
+
 
 </body>
 </html>

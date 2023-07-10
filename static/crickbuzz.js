@@ -62,6 +62,7 @@
       var link = document.createElement('a');
       link.target = '_self';
       link.href = links[i];
+      link.id = 'myAnchor'
       link.title = 'Focussed Karim Janat sets himself up for Test bout';
       link.appendChild(image);
 
@@ -116,3 +117,27 @@
     }
 
   })};
+
+  document.getElementById("myAnchor").addEventListener("click", function(event) {
+  event.preventDefault();  // Prevent the default anchor behavior
+
+  // Extract the href value
+  var href = this.getAttribute("href");
+
+  // Make the API request using the href value
+  fetch('/newsdetils', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ href: href }) // Send href in the request body
+  })
+  .then(response => {
+    // Handle the API response as needed
+    console.log(response);
+  })
+  .catch(error => {
+    // Handle any errors
+    console.error(error);
+  });
+});

@@ -28,7 +28,7 @@ app = Flask(__name__)
 proxies = {
     "http": "http://36.67.45.71:8080",
 }
-global page_index
+# global page_index
 page_index = 2
 
 
@@ -73,7 +73,7 @@ def getnewssubtitle():
     return list(subs)
 
 
-# get news time
+# get news category and event
 def getnewstype():
     newstimes = []
     categorylist = []
@@ -116,7 +116,7 @@ def getnexturl():
     # print(updated_string)
     return nexturl
 
-
+# to connect to mysql
 # app = Flask(__name__)
 # app.secret_key = 'super-secret-key'
 # app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:@localhost/coding"
@@ -148,17 +148,24 @@ def home():
         'event': event
     }
 
-    print(type(links))
     return render_template("index.html", titles=titles, links=links, subs=subs, imgs=imgs,
                            category=category, event=event, nexturl=nexturl)
+# <string:url>
 
-
-@app.route("/newsdetils<string:url>", methods=["GET"])
-def details(url):
+@app.route("/newsdetils/<path:slug>", methods=['GET', 'POST'])
+def details(slug):
+    url = "https://www.cricbuzz.com/" + slug
     nr = requests.get(url, proxies=proxies)
     conent = nr.content
-    soup2 = BeautifulSoup(conent, 'html.parser')
-    return render_template("newsdetail.html")
+    soup = (BeautifulSoup(conent, 'html.parser'))
+    img = soup.select("img.cursor-pointer")
+    img = [img.get('src') for img in img]
+    backgroundimage = "https://www.cricbuzz.com"+img[0]
+    text = soup.select("p.cb-nws-para")
+    para = []
+    for texts in text:
+        para.append(texts.text)
+    return render_template("newsdata.html", data=para, image=backgroundimage)
 
 
 nexturl = ""
@@ -168,10 +175,6 @@ nexturl = ""
 def news():
     global page_index
     global nexturl
-    # category, event = getnewstype()
-    # subs = getnewssubtitle()
-    # titles, links = getnewstitle()
-    # imgs = getnewsimage()
     if page_index > 2:
         nexturl = nexturl
     else:
@@ -185,15 +188,12 @@ def news():
         lstdata = "/" + str(parts2) + "/" + str(value1) + "/" + str(value2)
         nexturl = "".join(lstdata[1:])
 
-    # titles.clear(), links.clear(), subs.clear(), newstimes.clear(), imgs.clear(), categorylist.clear(), category.clear(), event.clear()
     url = "https://www.cricbuzz.com" + nexturl
-    # print(url)
     nr = requests.get(url, proxies=proxies)
 
     conent = nr.content
     soup2 = BeautifulSoup(conent, 'html.parser')
 
-    # print(soup2)
     pg2titles = []
     pg2links = []
     pg2title = soup2.select("a.cb-nws-hdln-ancr.text-hvr-underline")
@@ -201,7 +201,6 @@ def news():
         titledata = pg2title[i].string
         pg2titles.append(titledata)
         link = pg2title[i].get("href")
-        # pg2links.append("https://www.cricbuzz.com" + link)
         pg2links.append(link)
 
     pg2images = soup2.select("img.cb-lst-img")
@@ -253,19 +252,11 @@ def news():
     }
     json_data = json.dumps(jsondata)
     page_index += 1
-    # print(soup2)
     try:
         nexturl = soup2.select("div.ajax-pagination")[0].get("url")
     except:
         pass
-    print(nexturl)
-    print(page_index)
     return json_data
-
-
-# if __name__ == '__main__':
-#     # app.run(debug=True)
-#     app.run()
 
 
 if __name__ == "__main__":

@@ -111,3 +111,11 @@ proxies = {
     # "https":"http://36.67.45.71:8080"
 }
 # s = requests.get("https://www.javatpoint.com/proxy-server-list", proxies=proxies)
+
+from urllib.parse import quote
+
+post_slug = "cricket-news/127120/mis-project-brevis-reaches-american-checkpoint-dewald-brevis-mumbai-indians"
+encoded_slug = quote(post_slug)
+
+anchor_tag = f'<a href="/newsdetils/{encoded_slug}">Link</a>'
+print(anchor_tag)
