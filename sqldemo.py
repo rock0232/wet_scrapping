@@ -15,7 +15,7 @@ connection_string = 'DRIVER={ODBC Driver 17 for SQL Server};Server=DESKTOP-0SBGO
 
 @app.route("/", methods=['GET'])
 def home():
-    return render_template("customer.html", returnvalue='hello')
+    return render_template("customer.html", returnValue='hello')
 
 
 @app.route("/register", methods=['POST'])
@@ -32,12 +32,13 @@ def register():
         isdelete = 1
 
         if fname and lname and useremail and userphone and usercity and isdelete is not None:
-            print(fname)
-            print(lname)
-            print(useremail)
-            print(userphone)
-            print(usercity)
-            print(isdelete)
+            # print(fname)
+            # print(lname)
+            # print(useremail)
+            # print(userphone)
+            # print(usercity)
+            # print(isdelete)
+            # data = cursor.procedures("[dbo].[registeruser]")
             sql = """\
             SET NOCOUNT ON;
             EXEC [rockdatabase].[dbo].[RegisterUser] ?, ?, ?, ?, ?, ?, ?;
@@ -45,9 +46,6 @@ def register():
             values = (fname, lname, useremail, usercity, userphone, returnValue, isdelete)
             # cursor.execute("""call [rockdatabase].[dbo].[RegisterUser] ?, ?, ?, ?, ?, ?;""",(fname, lname, useremail, usercity,userphone,returnValue))
             cursor.execute(sql, values)
-            # status = cursor.execute("""{CALL RegisterUser (?, ?, ?, ?, ?, ?)}""", (fname, lname, useremail, usercity,userphone,returnValue)).fetchval()
-            # response = cursor.execute(f"exec registeruser @fname='{fname}', @lname='{lname}', @email='{useremail}', @city='{usercity}', @phone='{userphone}', @returnValue='{returnValue}'").fetchval()
-            # cursor.execute("SELECT ? AS response", (returnValue,))
             returnValue = (cursor.fetchval())
             print(returnValue)
             cursor.commit()
@@ -62,9 +60,9 @@ def register():
             else:
                 returnValue = "An error occurred."
 
-            return render_template("response.html", returnValue=returnValue)
+            return render_template("customer.html", returnValue=returnValue)
         else:
-            return render_template("response.html", returnValue="Please Enter Value")
+            return render_template("customer.html", returnValue="Please Enter Value")
     else:
         return redirect("/")
 

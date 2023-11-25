@@ -72,6 +72,13 @@ def getnewssubtitle():
         subs.append(subtitledata)
     return list(subs)
 
+def getnewstime():
+    times = []
+    newstime = soup().select('span.cb-nws-time')
+    for time in newstime:
+        time = time.string
+        times.append(time)
+    return times
 
 # get news category and event
 def getnewstype():
@@ -94,7 +101,6 @@ def getnewstype():
     category = data[::2]
     event = data[1::2]
     return list(category)[0:10], list(event)
-
 
 # get news image
 def getnewsimage():
@@ -132,6 +138,7 @@ def getnexturl():
 def home():
     global page_index
     category, event = getnewstype()
+    newstimes = getnewstime()
     subs = getnewssubtitle()
     titles, links = getnewstitle()
     nexturl = getnexturl()
@@ -145,19 +152,24 @@ def home():
         'subs': subs,
         'imgs': imgs,
         'category': category,
-        'event': event
+        'event': event,
+        'newstimes':newstimes
     }
-
+    sp = 0
+    # print(sp)
+    sp+=1
     return render_template("index.html", titles=titles, links=links, subs=subs, imgs=imgs,
-                           category=category, event=event, nexturl=nexturl)
+                           category=category, event=event, nexturl=nexturl, newstimes=newstimes)
 # <string:url>
 
 @app.route("/newsdetils/<path:slug>", methods=['GET', 'POST'])
 def details(slug):
     url = "https://www.cricbuzz.com/" + slug
-    nr = requests.get(url, proxies=proxies)
+    nr = requests.get(url)
+    # print(url)
     conent = nr.content
     soup = (BeautifulSoup(conent, 'html.parser'))
+    # print(soup)
     img = soup.select("img.cursor-pointer")
     img = [img.get('src') for img in img]
     backgroundimage = "https://www.cricbuzz.com"+img[0]
@@ -171,7 +183,7 @@ def details(slug):
 nexturl = ""
 
 
-@app.route("/demo", methods=["GET"])
+@app.route("/demo", methods=["POST", "GET"])
 def news():
     global page_index
     global nexturl
@@ -241,6 +253,13 @@ def news():
     imgs = imgs2
     pgcategory = pgcategory
 
+    times = []
+    newstime = soup2.select('span.cb-nws-time')
+    for time in newstime:
+        time = time.string
+        times.append(time)
+        # return times
+
     jsondata = {
         'titles': pg2titles,
         'links': pg2links,
@@ -248,6 +267,7 @@ def news():
         'imgs': imgs,
         'category': pgcategory,
         'event': pgevent,
+        'newstimes':times,
         'nexturl': nexturl
     }
     json_data = json.dumps(jsondata)
@@ -256,8 +276,11 @@ def news():
         nexturl = soup2.select("div.ajax-pagination")[0].get("url")
     except:
         pass
+    sp = 0
+    # print(sp)
+    sp+=1
     return json_data
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
