@@ -72,6 +72,7 @@ def getnewssubtitle():
         subs.append(subtitledata)
     return list(subs)
 
+
 def getnewstime():
     times = []
     newstime = soup().select('span.cb-nws-time')
@@ -79,6 +80,7 @@ def getnewstime():
         time = time.string
         times.append(time)
     return times
+
 
 # get news category and event
 def getnewstype():
@@ -102,6 +104,7 @@ def getnewstype():
     event = data[1::2]
     return list(category)[0:10], list(event)
 
+
 # get news image
 def getnewsimage():
     imgs = []
@@ -109,10 +112,10 @@ def getnewsimage():
     for i in range(len(images)):
         img = images[i].get("src")
         try:
-            imgs.append("https://www.cricbuzz.com" + img)
+            imgs.append(img)
         except:
             img = images[i].get("source")
-            imgs.append("https://www.cricbuzz.com" + img)
+            imgs.append(img)
     return list(imgs[:-6])
 
 
@@ -121,6 +124,7 @@ def getnexturl():
     updated_string = "/".join(nexturl.split("/")[:-1])
     # print(updated_string)
     return nexturl
+
 
 # to connect to mysql
 # app = Flask(__name__)
@@ -153,13 +157,15 @@ def home():
         'imgs': imgs,
         'category': category,
         'event': event,
-        'newstimes':newstimes
+        'newstimes': newstimes
     }
     sp = 0
     # print(sp)
-    sp+=1
+    sp += 1
     return render_template("index.html", titles=titles, links=links, subs=subs, imgs=imgs,
                            category=category, event=event, nexturl=nexturl, newstimes=newstimes)
+
+
 # <string:url>
 
 @app.route("/newsdetils/<path:slug>", methods=['GET', 'POST'])
@@ -172,7 +178,7 @@ def details(slug):
     # print(soup)
     img = soup.select("img.cursor-pointer")
     img = [img.get('src') for img in img]
-    backgroundimage = "https://www.cricbuzz.com"+img[0]
+    backgroundimage = img[0]
     text = soup.select("p.cb-nws-para")
     para = []
     for texts in text:
@@ -220,10 +226,10 @@ def news():
     for i in range(len(pg2images)):
         img = pg2images[i].get("src")
         try:
-            imgs2.append("https://www.cricbuzz.com" + img)
+            imgs2.append(img)
         except:
             img = pg2images[i].get("source")
-            imgs2.append("https://www.cricbuzz.com" + img)
+            imgs2.append(img)
 
     pg2subtitle = soup2.select("div.cb-nws-intr")
     subs2 = []
@@ -267,7 +273,7 @@ def news():
         'imgs': imgs,
         'category': pgcategory,
         'event': pgevent,
-        'newstimes':times,
+        'newstimes': times,
         'nexturl': nexturl
     }
     json_data = json.dumps(jsondata)
@@ -278,7 +284,7 @@ def news():
         pass
     sp = 0
     # print(sp)
-    sp+=1
+    sp += 1
     return json_data
 
 

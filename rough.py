@@ -1,43 +1,28 @@
-import sys
+import time
 
-lst = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+from selenium import webdriver
 
-print(lst[:-6])
+driver = webdriver.Chrome()
 
-A = 10, 20, 30
-print(id(A))
+# Open the first tab
+driver.get("https://uatb2c.cloudd.live")
 
-A = 1, 2, 3, 4
-a, b, c, d = A
-print(a, b, c, d)
+time.sleep(10)
 
-a = 0o101
-b = 2
-c = a + b
+# Open a new tab
+driver.execute_script("window.open('', '_blank');")
 
-a = "Hello world"
-c = a
+# Switch to the new tab
+window_handles = driver.window_handles
+driver.switch_to.window(window_handles[1])
 
-print(a is c)  # Returns true if the two variables are pointing to the same object
-print(id(a))  # 64450416
-print(id(c))  # 64450416
+# Perform actions in the new tab
+driver.get("https://devb2c.cloudd.live")
 
-print(sys.version)
+# Switch back to the original tab
+driver.switch_to.window(window_handles[0])
 
-a = [1, 2, 3, 4, 5, 6, 7, 8]
-print(str(a))
-
-numbers = ','.join(str(i) for i in a)
-print(numbers)
-
-a = [100, 200, 300, 400, 500, 600, 700, 800]
-
-print(a[3:])  # Prints the values from index 3 till the end [400, 500, 600, 700, 800]
-print(a[3:6])  # Prints the values from index 3 to index 6. [400, 500, 600]
-print(a[2::2])  # Prints the values from index 2 till the end of the list with step count 2. [300, 500, 700]
-
-print(a[-2])
-list = ["1", "4", "0", "6", "9"]
-list = [int(i) for i in list]
-list.sort()
-print(list)
+# Perform more actions in the original tab if needed
+time.sleep(10)
+# Close the browser
+driver.quit()
